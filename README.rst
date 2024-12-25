@@ -1,4 +1,6 @@
-This is Python version 3.14.0 alpha 3
+This is PyCasm 1.0 based on Python version 3.14.0 alpha 3
+
+
 =====================================
 
 .. image:: https://github.com/python/cpython/actions/workflows/build.yml/badge.svg?branch=main&event=push
