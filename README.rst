@@ -1,4 +1,5 @@
-This is PyCasm 1.0 based on Python version 3.14.0 alpha 3
+This is PyCasm 1.0, a sarcastic meme version of the python programming language built on a fork of Python version 3.14.0 alpha 3
+
 
 
 =====================================
