@@ -1,47 +1,54 @@
 This is PyCasm 1.0, a sarcastic meme version of the python programming language built on a fork of Python version 3.14.0 alpha 3
 
-PyCasm changes the python interpreter to use sarcastic synonms of reserved keywords:
+What does PyCasm do?::
+PyCasm changes the python interpreter to use sarcastic synonms of reserved keywords: 
 
-def → obviously
-class → special_snowflake
+Examples:
+- def → obviously
+- class → special_snowflake
+
 Keywords for logic and conditions:
+- if → maybe
+- elif → on_second_thought
+- else → fine_then
+- while → as_long_as
+- for → because_i_said_so
 
-if → maybe
-elif → on_second_thought
-else → fine_then
-while → as_long_as
-for → because_I_said_so
 Keywords for boolean logic:
+- and → plus_this
+- or → or_whatever
+- not → hell_nah
 
-and → plus_this
-or → or_whatever
-not → oh_no_you_dont
 Keywords for returns and loops:
+- return → take_it_back
+- break → i_quit
+- continue → ugh_fine
 
-return → take_it_back
-break → I_quit
-continue → ugh_fine
 Keywords for exception handling:
+- try → give_it_a_whirl
+- except → but_of_course
+- finally → thank_god
+- raise → drama
 
-try → give_it_a_whirl
-except → but_of_course
-finally → thank_god
-raise → drama
 Keywords for imports:
+- import → grab
+- from → straight_outta
 
-import → grab
-from → straight_outta
 Keywords for variable scopes:
+- global → everywhere
+- nonlocal → not_here
 
-global → everywhere
-nonlocal → not_here
 Miscellaneous:
+- pass → do_nothing
+- True → no_cap
+- False → yeah_right
+- None → nothing_to_see_here
+- print → shout_out
 
-pass → do_nothing
-True → obviously_true
-False → yeah_right
-None → nothing_to_see_here
-print → shout_out
+:: 
+Roadmap / Todo:
+Eventaully I hope to rename the functions too, and make a program that can go through the pyhton code and jsut let people enter what keywords they want replaced so a anyone can easily make their own meme langauges. But that for when i get better at coding and know what I am actually doing.
+
 
 =====================================
 
