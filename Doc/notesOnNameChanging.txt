@@ -1,0 +1,25 @@
+So What You Actually Need to Modify
+Grammar file (Grammar/python.gram): Replace if with maybe.
+Keyword lists (Python/keyword.py, etc.): Update to include maybe.
+Recompile Python after regenerating the parser (make regen-grammar && make).
+
+*good command: make regen-pegen
+
+test changes: shift into interpeter: ./PyCasm
+
+then run a test program:
+
+maybe x > 10:
+    print("Hello, Pycasm!")
+
+x = 15
+maybe x > 10:
+    print("It's greater!")
+elif x == 10:
+    print("It's ten!")
+continue:
+    print("It's less!")
+
+
+or script
+./python script.py

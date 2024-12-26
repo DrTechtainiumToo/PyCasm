@@ -128,7 +128,7 @@ simple_stmt[stmt_ty] (memo):
 
 compound_stmt[stmt_ty]:
     | &('def' | '@' | 'async') function_def
-    | &'if' if_stmt
+    | &'maybe' if_stmt
     | &('class' | '@') class_def
     | &('with' | 'async') with_stmt
     | &('for' | 'async') for_stmt
@@ -359,9 +359,9 @@ default[expr_ty]: '=' a=expression { a } | invalid_default
 
 if_stmt[stmt_ty]:
     | invalid_if_stmt
-    | 'if' a=named_expression ':' b=block c=elif_stmt {
+    | 'maybe' a=named_expression ':' b=block c=elif_stmt {
         _PyAST_If(a, b, CHECK(asdl_stmt_seq*, _PyPegen_singleton_seq(p, c)), EXTRA) }
-    | 'if' a=named_expression ':' b=block c=[else_block] { _PyAST_If(a, b, c, EXTRA) }
+    | 'maybe' a=named_expression ':' b=block c=[else_block] { _PyAST_If(a, b, c, EXTRA) }
 elif_stmt[stmt_ty]:
     | invalid_elif_stmt
     | 'elif' a=named_expression ':' b=block c=elif_stmt {
@@ -457,7 +457,7 @@ case_block[match_case_ty]:
     | "case" pattern=patterns guard=guard? ':' body=block {
         _PyAST_match_case(pattern, guard, body, p->arena) }
 
-guard[expr_ty]: 'if' guard=named_expression { guard }
+guard[expr_ty]: 'maybe' guard=named_expression { guard }
 
 patterns[pattern_ty]:
     | patterns[asdl_pattern_seq*]=open_sequence_pattern {
@@ -671,7 +671,7 @@ expressions[expr_ty]:
 expression[expr_ty] (memo):
     | invalid_expression
     | invalid_legacy_expression
-    | a=disjunction 'if' b=disjunction 'else' c=expression { _PyAST_IfExp(b, a, c, EXTRA) }
+    | a=disjunction 'maybe' b=disjunction 'else' c=expression { _PyAST_IfExp(b, a, c, EXTRA) }
     | disjunction
     | lambdef
 
@@ -965,9 +965,9 @@ for_if_clauses[asdl_comprehension_seq*]:
     | a[asdl_comprehension_seq*]=for_if_clause+ { a }
 
 for_if_clause[comprehension_ty]:
-    | 'async' 'for' a=star_targets 'in' ~ b=disjunction c[asdl_expr_seq*]=('if' z=disjunction { z })* {
+    | 'async' 'for' a=star_targets 'in' ~ b=disjunction c[asdl_expr_seq*]=('maybe' z=disjunction { z })* {
         CHECK_VERSION(comprehension_ty, 6, "Async comprehensions are", _PyAST_comprehension(a, b, c, 1, p->arena)) }
-    | 'for' a=star_targets 'in' ~ b=disjunction c[asdl_expr_seq*]=('if' z=disjunction { z })* {
+    | 'for' a=star_targets 'in' ~ b=disjunction c[asdl_expr_seq*]=('maybe' z=disjunction { z })* {
         _PyAST_comprehension(a, b, c, 0, p->arena) }
     | invalid_for_if_clause
     | invalid_for_target
@@ -1157,7 +1157,7 @@ invalid_kwarg:
 
 # IMPORTANT: Note that the "_without_invalid" suffix causes the rule to not call invalid rules under it
 expression_without_invalid[expr_ty]:
-    | a=disjunction 'if' b=disjunction 'else' c=expression { _PyAST_IfExp(b, a, c, EXTRA) }
+    | a=disjunction 'maybe' b=disjunction 'else' c=expression { _PyAST_IfExp(b, a, c, EXTRA) }
     | disjunction
     | lambdef
 invalid_legacy_expression:
@@ -1183,7 +1183,7 @@ invalid_expression:
    | !(NAME STRING | SOFT_KEYWORD) a=disjunction b=expression_without_invalid {
         _PyPegen_check_legacy_stmt(p, a) ? NULL : p->tokens[p->mark-1]->level == 0 ? NULL :
         RAISE_SYNTAX_ERROR_KNOWN_RANGE(a, b, "invalid syntax. Perhaps you forgot a comma?") }
-   | a=disjunction 'if' b=disjunction !('else'|':') { RAISE_SYNTAX_ERROR_KNOWN_RANGE(a, b, "expected 'else' after 'if' expression") }
+   | a=disjunction 'maybe' b=disjunction !('else'|':') { RAISE_SYNTAX_ERROR_KNOWN_RANGE(a, b, "expected 'else' after 'maybe' expression") }
    | a='lambda' [lambda_params] b=':' &FSTRING_MIDDLE  {
         RAISE_SYNTAX_ERROR_KNOWN_RANGE(a, b, "f-string: lambda expressions are not allowed without parentheses") }
 
@@ -1386,9 +1386,9 @@ invalid_class_pattern:
 invalid_class_argument_pattern[asdl_pattern_seq*]:
     | [positional_patterns ','] keyword_patterns ',' a=positional_patterns { a }
 invalid_if_stmt:
-    | 'if' named_expression NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
-    | a='if' a=named_expression ':' NEWLINE !INDENT {
-        RAISE_INDENTATION_ERROR("expected an indented block after 'if' statement on line %d", a->lineno) }
+    | 'maybe' named_expression NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
+    | a='maybe' a=named_expression ':' NEWLINE !INDENT {
+        RAISE_INDENTATION_ERROR("expected an indented block after 'maybe' statement on line %d", a->lineno) }
 invalid_elif_stmt:
     | 'elif' named_expression NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
     | a='elif' named_expression ':' NEWLINE !INDENT {
